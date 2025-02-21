@@ -21,11 +21,6 @@ struct BaseMessage {
         std::memcpy(buffer.data(), &id, sizeof(id));
         return buffer;
     }
-    // std::vector<uint8_t> serialize() const {
-    //     std::vector<uint8_t> buffer(sizeof(BaseMessage));
-    //     std::memcpy(buffer.data(), &id, sizeof(id)); // id 값을 리틀 엔디안으로 직렬화
-    //     return buffer;
-    // }
 
     // 바이너리 데이터를 역직렬화하여 BaseMessage 생성
     static BaseMessage deserialize(const std::vector<uint8_t>& buffer) {
@@ -41,13 +36,18 @@ struct BaseMessage {
 
 class MessageCaster
 {
-    // 
-public:
-
-
 public:
     MessageCaster();
     ~MessageCaster();
+ 
+private:
+    int MAX_BUUFER_SIZE = 2048;
+
+
+public:
+    void RecvPostProcess();
+    void SendPreProcess();
+    void HandleMessage();
 
 };
 

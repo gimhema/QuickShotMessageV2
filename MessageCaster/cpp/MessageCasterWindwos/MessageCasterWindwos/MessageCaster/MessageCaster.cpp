@@ -11,3 +11,19 @@ MessageCaster::~MessageCaster()
 {
 
 }
+
+
+void MessageCaster::RecvPostProcess()
+{
+
+}
+
+void MessageCaster::SendPreProcess()
+{
+
+}
+
+void MessageCaster::HandleMessage()
+{
+
+}
