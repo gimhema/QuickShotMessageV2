@@ -2,8 +2,7 @@
         #[repr(C)]
         #[derive(Debug, Clone)]
         pub struct Hello {
-            message: String,
-    message_length: u32,}
+            message: String,}
     
         impl Hello {
             pub fn new(message: String) -> Self {

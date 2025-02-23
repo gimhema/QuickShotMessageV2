@@ -5,9 +5,7 @@
             id: u32,
     val: f32,
     name: String,
-    name_length: u32,
-    nums: Vec<i32>,
-    nums_length: u32,}
+    nums: Vec<i32>,}
     
         impl ExampleMessage {
             pub fn new(id: u32, val: f32, name: String, nums: Vec<i32>) -> Self {

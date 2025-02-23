@@ -67,7 +67,7 @@ impl RustGenerator {
                 }
                 "String" => {
                     struct_fields.push_str(&format!("    {}: String,\n", field_name));
-                    struct_fields.push_str(&format!("    {}_length: u32,\n", field_name));
+                    // struct_fields.push_str(&format!("    {}_length: u32,\n", field_name));
                     constructor_params.push_str(&format!("{}: String, ", field_name));
                     constructor_assignments.push_str(&format!("            {},\n", field_name));
                     serialization_code.push_str(&format!(
@@ -88,7 +88,7 @@ impl RustGenerator {
                 }
                 "ArrayInteger" => {
                     struct_fields.push_str(&format!("    {}: Vec<i32>,\n", field_name));
-                    struct_fields.push_str(&format!("    {}_length: u32,\n", field_name));
+                    // struct_fields.push_str(&format!("    {}_length: u32,\n", field_name));
                     constructor_params.push_str(&format!("{}: Vec<i32>, ", field_name));
                     constructor_assignments.push_str(&format!("            {},\n", field_name));
                     serialization_code.push_str(&format!(
