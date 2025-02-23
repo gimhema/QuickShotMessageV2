@@ -27,11 +27,27 @@ impl BaseMessage {
     }
 }
 
-struct MessageCaster
-{
+pub fn handle_quicksot_message(buffer: &[u8]) {
+    // BaseMessage의 ID 확인
+    let base_message = BaseMessage::deserialize(buffer).unwrap();
 
-}
+    let base_message_id = base_message.id; // id를 복사
 
-impl MessageCaster {
-    
+    // Customize . . .
+
+    // Example
+    // match base_message_id {
+    //     0 => {
+
+    //     }
+    //     1 => {
+
+    //     }
+    //     2 => {
+
+    //     }
+    //     _ => {
+    //         println!("Unknown message id: {}", base_message_id);
+    //     }
+    // }
 }
