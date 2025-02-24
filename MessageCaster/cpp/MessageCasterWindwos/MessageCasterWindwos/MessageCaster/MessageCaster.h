@@ -47,8 +47,7 @@ private:
 public:
     void RecvPostProcess();
     void SendPreProcess();
-    void HandleMessage();
+    void HandleMessage(const std::vector<uint8_t>& buffer);
 
 };
-
 
