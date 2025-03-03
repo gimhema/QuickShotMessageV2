@@ -15,9 +15,11 @@ public:
 public:
     void Init(std::string _ip_address, int _port);
     int Run();
+
+private:
     void SendMessage();
     ExampleMessage ParseMessage(const std::string& input);
-    
+
 public:
     std::string ip_address = "";
     int port = 0;

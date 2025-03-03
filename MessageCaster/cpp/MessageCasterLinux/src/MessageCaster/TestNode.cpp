@@ -98,13 +98,18 @@ void TestNode::SendMessage()
             break;
         }
 
+        // Input Use Case : 1001 3.14 Player1 10 20 30 40
+        // std::string input = "1001 3.14 Player1 10 20 30 40";
+
         if (!message.empty()) {
-            std::vector<uint8_t> data(message.begin(), message.end()); // 문자열을 바이트 벡터로 변환
-            if (send(sock, data.data(), data.size(), 0) < 0) {
+            ExampleMessage _exampleMsg = ParseMessage(message);
+            std::vector<uint8_t> _sendMsg = _exampleMsg.serialize();
+
+            if (send(sock, _sendMsg.data(), _sendMsg.size(), 0) < 0) {
                 std::cerr << "Send error" << std::endl;
                 break;
             }
-            std::cout << "Message sent: " << message << std::endl;
+
         }
     }
 }
