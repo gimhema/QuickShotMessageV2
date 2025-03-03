@@ -1,6 +1,6 @@
 #include "TestNode.h"
 #include "MessageCaster.h"
-
+#include <memory>
 
 TestNode::TestNode()
 {
@@ -23,7 +23,7 @@ int TestNode::Run()
     int sock = 0;
     struct sockaddr_in node_addr;
 
-    MessageCaster* m_caster = new MessageCaster();
+    std::unique_ptr<MessageCaster> m_caster = std::make_unique<MessageCaster>();
 
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         std::cerr << "Socket creation error" << std::endl;
@@ -35,28 +35,35 @@ int TestNode::Run()
 
     if (inet_pton(AF_INET, this->ip_address.c_str(), &node_addr.sin_addr) <= 0) {
         std::cerr << "Invalid address/ Address not supported" << std::endl;
+        close(sock);
         return -1;
     }
 
     if (connect(sock, (struct sockaddr*)&node_addr, sizeof(node_addr)) < 0) {
         std::cerr << "Connection Failed" << std::endl;
+        close(sock);
         return -1;
     }
 
-    std::vector<uint8_t> buffer(2048); // 충분히 큰 버퍼 준비
-    int bytes_received = recv(sock, buffer.data(), buffer.size(), 0);
+    std::vector<uint8_t> buffer(2048);
 
-    if (bytes_received > 0) {
-        buffer.resize(bytes_received); // 실제 수신된 데이터만큼 버퍼 크기 조정
-        m_caster->HandleMessage(buffer);
-    } else if (bytes_received == 0) {
-        std::cout << "Connection closed by server" << std::endl;
-    } else {
-        std::cerr << "Receive error" << std::endl;
+    // 지속적으로 메시지를 수신하는 루프
+    while (true) {
+        int bytes_received = recv(sock, buffer.data(), buffer.size(), 0);
+
+        if (bytes_received > 0) {
+            buffer.resize(bytes_received);
+            m_caster->HandleMessage(buffer); // 수신된 메시지 처리
+        } else if (bytes_received == 0) {
+            std::cout << "Connection closed by server" << std::endl;
+            break;
+        } else {
+            std::cerr << "Receive error" << std::endl;
+            break;
+        }
     }
 
-    close(sock); // 소켓 종료
-    
+    close(sock); // 루프 종료 후 소켓 닫기
     return 0;
 }
 
