@@ -19,6 +19,7 @@ public:
 public:
     std::string ip_address = "";
     int port = 0;
+    int sock = 0;
 };
 
 

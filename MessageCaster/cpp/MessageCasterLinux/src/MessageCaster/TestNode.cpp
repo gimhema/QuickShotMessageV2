@@ -1,15 +1,22 @@
 #include "TestNode.h"
 #include "MessageCaster.h"
+#include <iostream>
+#include <vector>
+#include <thread>
+#include <cstring>
+#include <unistd.h>
 #include <memory>
 
-TestNode::TestNode()
+TestNode::TestNode() : sock(-1)
 {
 
 }
 
 TestNode::~TestNode()
 {
-
+    if (sock!= -1) {
+        close(sock);
+    }
 }
 
 void TestNode::Init(std::string _ip_address, int _port)
@@ -20,7 +27,6 @@ void TestNode::Init(std::string _ip_address, int _port)
 
 int TestNode::Run()
 {
-    int sock = 0;
     struct sockaddr_in node_addr;
 
     std::unique_ptr<MessageCaster> m_caster = std::make_unique<MessageCaster>();
@@ -45,6 +51,8 @@ int TestNode::Run()
         return -1;
     }
 
+    std::thread send_thread(&TestNode::SendMessage, this);
+
     std::vector<uint8_t> buffer(2048);
 
     // 지속적으로 메시지를 수신하는 루프
@@ -63,6 +71,10 @@ int TestNode::Run()
         }
     }
 
+    if (send_thread.joinable()) {
+        send_thread.join();
+    }
+
     close(sock); // 루프 종료 후 소켓 닫기
     return 0;
 }
@@ -74,7 +86,26 @@ void TestNode::SendMessage()
     //    std::vector<uint8_t> serialized_data = packed_data.serialize();
     //    send(sock, serialized_data.data(), serialized_data.size(), 0);
     //    std::cout << "PackedData message sent to server" << std::endl;
+    while (true) {
+        std::string message;
+        std::cout << "Enter message to send (or type 'exit' to quit): ";
+        std::getline(std::cin, message);
 
+        if (message == "exit") {
+            std::cout << "Closing connection..." << std::endl;
+            close(sock);
+            break;
+        }
+
+        if (!message.empty()) {
+            std::vector<uint8_t> data(message.begin(), message.end()); // 문자열을 바이트 벡터로 변환
+            if (send(sock, data.data(), data.size(), 0) < 0) {
+                std::cerr << "Send error" << std::endl;
+                break;
+            }
+            std::cout << "Message sent: " << message << std::endl;
+        }
+    }
 }
 
 
