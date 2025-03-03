@@ -6,7 +6,7 @@
 #include <cstring>
 #include <unistd.h>
 #include <memory>
-#include "../Messages/ExampleMessage.hpp"
+#include <sstream>
 
 TestNode::TestNode() : sock(-1)
 {
@@ -109,6 +109,22 @@ void TestNode::SendMessage()
     }
 }
 
+ExampleMessage TestNode::ParseMessage(const std::string& input) {
+    std::istringstream stream(input);
+    uint32_t id;
+    float val;
+    std::string name;
+    std::vector<int32_t> nums;
 
+    // 문자열을 파싱하여 필드에 저장
+    stream >> id >> val;
+    stream >> name;  // 단일 단어 기준
+    int32_t num;
+    while (stream >> num) {  // 남은 숫자들을 벡터에 저장
+        nums.push_back(num);
+    }
+
+    return ExampleMessage(id, val, name, nums);
+}
 
 
