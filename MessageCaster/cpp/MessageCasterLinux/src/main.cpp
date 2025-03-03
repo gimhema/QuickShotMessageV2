@@ -5,7 +5,13 @@
 
 int main()
 {
-    MessageCaster* _caster = new MessageCaster();
+    TestNode* tNode = new TestNode();
     std::cout << "Message Caster Linux" << std::endl;
+
+    tNode->Init("127.0.0.1", 8080);
+    
+    tNode->Run();
+
+
     return 0;
 }
