@@ -6,6 +6,7 @@
 #include <cstring>
 #include <unistd.h>
 #include <memory>
+#include "../Messages/ExampleMessage.hpp"
 
 TestNode::TestNode() : sock(-1)
 {

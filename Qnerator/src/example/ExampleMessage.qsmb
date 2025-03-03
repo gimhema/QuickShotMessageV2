@@ -1,9 +1,7 @@
 msg ExampleMessage
 {
     Integer id
-    Long timestamp
     Float val
     String name
     ArrayInteger nums
-    ArrayFloat vals
 }
