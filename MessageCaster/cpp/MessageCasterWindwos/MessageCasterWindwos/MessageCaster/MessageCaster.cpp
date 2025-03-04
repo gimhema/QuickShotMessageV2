@@ -29,7 +29,7 @@ void MessageCaster::HandleMessage(const std::vector<uint8_t>& buffer)
 
     switch (base_message.id) {
     case 0: {
-        // id가 0이면 Invalid 출력
+
         std::cout << "Invalid message id: 0\n";
         break;
     }
