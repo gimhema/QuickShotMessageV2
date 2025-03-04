@@ -4,10 +4,10 @@ use std::io;
 #[repr(C)]
 #[derive(Debug, Clone)]
 pub struct ExampleMessage {
-    id: u32,
-val: f32,
-name: String,
-nums: Vec<i32>,}
+    pub id: u32,
+    pub val: f32,
+    pub name: String,
+    pub nums: Vec<i32>,}
 
 impl ExampleMessage {
     pub fn new(id: u32, val: f32, name: String, nums: Vec<i32>) -> Self {

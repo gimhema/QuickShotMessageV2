@@ -1,3 +1,5 @@
+use crate::messages::example_message::ExampleMessage;
+
 
 
 #[repr(packed)]
@@ -36,18 +38,23 @@ pub fn handle_quicksot_message(buffer: &[u8]) {
     // Customize . . .
 
     // Example
-    // match base_message_id {
-    //     0 => {
-
-    //     }
-    //     1 => {
-
-    //     }
-    //     2 => {
-
-    //     }
-    //     _ => {
-    //         println!("Unknown message id: {}", base_message_id);
-    //     }
-    // }
+    match base_message_id {
+        0 => {
+            println!("message id 0");
+         }
+         1 => {
+            println!("message id 1");
+            let mut _example_message = ExampleMessage::deserialize(buffer).unwrap();
+            println!("id : {}", _example_message.id.clone());
+            println!("val : {}", _example_message.val.clone());
+            println!("name : {}", _example_message.name.clone());
+            println!("nums : {:?}", _example_message.nums.clone());
+         }
+         2 => {
+            println!("message id 2");
+         }
+         _ => {
+             println!("Unknown message id: {}", base_message_id);
+         }
+     }
 }

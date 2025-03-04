@@ -1,4 +1,5 @@
 #include "MessageCaster.h"
+#include "../Messages/ExampleMessage.hpp"
 
 
 MessageCaster::MessageCaster()
@@ -35,6 +36,17 @@ void MessageCaster::HandleMessage(const std::vector<uint8_t>& buffer)
     }
     case 1: {
         std::cout << "Case 1 " << std::endl;
+        ExampleMessage example_message = ExampleMessage::deserialize(buffer);
+
+        std::cout << "id : " << example_message.id << std::endl;
+        std::cout << "val : " << example_message.val << std::endl;
+        std::cout << "name : " << example_message.name << std::endl;
+        
+        for (size_t i = 0; i < example_message.nums.size(); ++i)
+        {
+            std::cout << "num[" << i << "] : " << example_message.nums[i] << std::endl;
+        }
+
         break;
     }
     case 2: {
