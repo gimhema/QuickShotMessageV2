@@ -2,12 +2,12 @@
         #[repr(C)]
         #[derive(Debug, Clone)]
         pub struct Transform {
-            x: f32,
-    y: f32,
-    z: f32,
-    roll: f32,
-    pitch: f32,
-    yaw: f32,}
+           pub x: f32,
+   pub y: f32,
+   pub z: f32,
+   pub roll: f32,
+   pub pitch: f32,
+   pub yaw: f32,}
     
         impl Transform {
             pub fn new(x: f32, y: f32, z: f32, roll: f32, pitch: f32, yaw: f32) -> Self {

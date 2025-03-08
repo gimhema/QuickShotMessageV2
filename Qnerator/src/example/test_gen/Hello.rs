@@ -2,7 +2,7 @@
         #[repr(C)]
         #[derive(Debug, Clone)]
         pub struct Hello {
-            message: String,}
+           pub message: String,}
     
         impl Hello {
             pub fn new(message: String) -> Self {

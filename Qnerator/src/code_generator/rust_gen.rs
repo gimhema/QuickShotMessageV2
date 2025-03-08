@@ -34,7 +34,7 @@ impl RustGenerator {
         for (field_type, field_name) in fields {
             match field_type.as_str() {
                 "Integer" => {
-                    struct_fields.push_str(&format!("    {}: u32,\n", field_name));
+                    struct_fields.push_str(&format!("   pub {}: u32,\n", field_name));
                     constructor_params.push_str(&format!("{}: u32, ", field_name));
                     constructor_assignments.push_str(&format!("            {},\n", field_name));
                     serialization_code.push_str(&format!(
@@ -50,7 +50,7 @@ impl RustGenerator {
                     ));
                 }
                 "Float" => {
-                    struct_fields.push_str(&format!("    {}: f32,\n", field_name));
+                    struct_fields.push_str(&format!("   pub {}: f32,\n", field_name));
                     constructor_params.push_str(&format!("{}: f32, ", field_name));
                     constructor_assignments.push_str(&format!("            {},\n", field_name));
                     serialization_code.push_str(&format!(
@@ -66,7 +66,7 @@ impl RustGenerator {
                     ));
                 }
                 "String" => {
-                    struct_fields.push_str(&format!("    {}: String,\n", field_name));
+                    struct_fields.push_str(&format!("   pub {}: String,\n", field_name));
                     // struct_fields.push_str(&format!("    {}_length: u32,\n", field_name));
                     constructor_params.push_str(&format!("{}: String, ", field_name));
                     constructor_assignments.push_str(&format!("            {},\n", field_name));
@@ -87,7 +87,7 @@ impl RustGenerator {
                     ));
                 }
                 "ArrayInteger" => {
-                    struct_fields.push_str(&format!("    {}: Vec<i32>,\n", field_name));
+                    struct_fields.push_str(&format!("   pub {}: Vec<i32>,\n", field_name));
                     // struct_fields.push_str(&format!("    {}_length: u32,\n", field_name));
                     constructor_params.push_str(&format!("{}: Vec<i32>, ", field_name));
                     constructor_assignments.push_str(&format!("            {},\n", field_name));
@@ -193,9 +193,13 @@ impl CodeGenerator for RustGenerator {
         println!("Data Fileds Name : {}", _fileds_name);
         println!("========== Parse Option ==========");
 
-        let fields = read_parse_struct(directory_name, file_name.clone());
+        let mut fields = read_parse_struct(directory_name, file_name.clone());
 
         println!("Data Fileds Result");
+
+        // `fields.iter_mut().for_each(|(_, value)| {
+        // `    *value = format!("pub {}", value);
+        // `});
 
         for (key, value) in &fields {
             println!("Key: {}, Value: {}", key, value);
