@@ -6,12 +6,31 @@ use std::io::{self, Write, Read};
 use std::path::Path;
 
 use std::fs;
-
+use std::env;
+use std::path::PathBuf;
 
 use super::GenType;
-
 use super::CPPGenerator;
 use super::RustGenerator;
+
+
+fn get_exe_directory() -> PathBuf {
+    let exe_path = env::current_exe().expect("Failed to get executable path");
+    exe_path.parent().unwrap().to_path_buf()
+}
+
+fn to_relative_path(exe_dir: &PathBuf, target_path: &str) -> String {
+    let target_path = PathBuf::from(target_path);
+    
+    if target_path.is_absolute() {
+        if let Ok(relative_path) = target_path.strip_prefix(exe_dir) {
+            return relative_path.to_string_lossy().to_string();
+        }
+    }
+    
+    target_path.to_string_lossy().to_string()
+}
+
 
 pub enum MODE {
     DEFAULT,
@@ -226,13 +245,23 @@ impl GenPrompt {
 
     }
 
-    pub fn run(&mut self, argv: Vec<String>) {
+    pub fn run(&mut self, mut argv: Vec<String>) {
         println!("Entering run function with arguments: {:?}", argv);
     
         if argv.len() < 2 {
             println!("Insufficient arguments.");
             self.print_help();
             return;
+        }
+
+        let exe_dir = get_exe_directory();
+
+        // argv[2]와 argv[4]를 상대 경로로 변환
+        if argv.len() > 2 {
+            argv[2] = to_relative_path(&exe_dir, &argv[2]);
+        }
+        if argv.len() > 4 {
+            argv[4] = to_relative_path(&exe_dir, &argv[4]);
         }
     
         self.mode = self.set_mode_by_prefix(argv[1].clone());
